@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Оценка разработки сайта для Endo-Stars</title>
+  <style>
+    :root {
+      --ink: #142028;
+      --muted: #5c6b73;
+      --line: #d8d2c6;
+      --paper: #f6f1e8;
+      --card: #fffdf8;
+      --accent: #1b5f5a;
+      --accent-deep: #0e3a38;
+      --warn: #8a4b12;
+      --danger: #7a2e24;
+      --ok: #1b5f5a;
+      --bar: #1b5f5a;
+      --shadow: none;
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; }
+    body {
+      font-family: "Iowan Old Style", "Palatino Linotype", Palatino, "Times New Roman", serif;
+      background: var(--paper);
+      color: var(--ink);
+      line-height: 1.45;
+    }
+    .wrap {
+      width: min(1080px, calc(100% - 40px));
+      margin: 0 auto;
+      padding: 48px 0 80px;
+    }
+    header {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 24px;
+      align-items: end;
+      padding-bottom: 28px;
+      border-bottom: 1px solid var(--line);
+    }
+    .eyebrow {
+      font-family: "Segoe UI", "Helvetica Neue", sans-serif;
+      font-size: 12px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin: 0 0 10px;
+    }
+    h1 {
+      font-size: clamp(32px, 5vw, 48px);
+      line-height: 1.05;
+      font-weight: 600;
+      margin: 0 0 10px;
+      letter-spacing: -0.02em;
+    }
+    .lead {
+      margin: 0;
+      color: var(--muted);
+      max-width: 42em;
+      font-size: 17px;
+    }
+    .deadline {
+      text-align: right;
+      font-family: "Segoe UI", "Helvetica Neue", sans-serif;
+    }
+    .deadline b {
+      display: block;
+      font-size: 28px;
+      line-height: 1;
+      color: var(--accent-deep);
+    }
+    .deadline span {
+      display: block;
+      margin-top: 6px;
+      font-size: 12px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+    .switch {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin: 28px 0 0;
+    }
+    .switch button {
+      appearance: none;
+      border: 1px solid var(--line);
+      background: transparent;
+      color: var(--ink);
+      padding: 10px 16px;
+      font: 14px/1 "Segoe UI", "Helvetica Neue", sans-serif;
+      cursor: pointer;
+    }
+    .switch button[aria-pressed="true"] {
+      background: var(--accent-deep);
+      border-color: var(--accent-deep);
+      color: #f6f1e8;
+    }
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      margin: 28px 0 40px;
+    }
+    .stat {
+      background: var(--card);
+      border: 1px solid var(--line);
+      padding: 18px 18px 16px;
+    }
+    .stat strong {
+      display: block;
+      font-size: 30px;
+      letter-spacing: -0.03em;
+      line-height: 1.1;
+    }
+    .stat span {
+      display: block;
+      margin-top: 8px;
+      font-family: "Segoe UI", "Helvetica Neue", sans-serif;
+      font-size: 12px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+    h2 {
+      font-size: 26px;
+      margin: 0 0 16px;
+      letter-spacing: -0.02em;
+    }
+    section { margin: 44px 0; }
+    .bars { display: grid; gap: 10px; }
+    .bar-row {
+      display: grid;
+      grid-template-columns: minmax(180px, 28%) 1fr 42px;
+      gap: 12px;
+      align-items: center;
+    }
+    .bar-row b {
+      font-size: 14px;
+      font-weight: 600;
+    }
+    .track {
+      height: 10px;
+      background: #e8e1d4;
+      position: relative;
+    }
+    .fill {
+      position: absolute;
+      inset: 0 auto 0 0;
+      background: var(--bar);
+      width: 0;
+      transition: width 0.25s ease;
+    }
+    .bar-row em {
+      font-style: normal;
+      font-family: "Segoe UI", "Helvetica Neue", sans-serif;
+      font-size: 13px;
+      text-align: right;
+      color: var(--muted);
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 15px;
+      background: var(--card);
+    }
+    th, td {
+      border-bottom: 1px solid var(--line);
+      padding: 12px 10px;
+      text-align: left;
+      vertical-align: top;
+    }
+    th {
+      font-family: "Segoe UI", "Helvetica Neue", sans-serif;
+      font-size: 11px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted);
+      font-weight: 600;
+    }
+    .num { text-align: right; font-variant-numeric: tabular-nums; width: 7%; }
+    th.num { text-align: right; }
+    tr.current td.current {
+      color: var(--accent-deep);
+      font-weight: 700;
+    }
+    .scope { color: var(--muted); }
+    .two {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 28px;
+    }
+    .box {
+      background: var(--card);
+      border: 1px solid var(--line);
+      padding: 22px 24px;
+    }
+    .box h3 {
+      margin: 0 0 10px;
+      font-size: 18px;
+    }
+    .box ul {
+      margin: 0;
+      padding-left: 1.1em;
+      color: var(--muted);
+    }
+    .box li + li { margin-top: 6px; }
+    footer {
+      margin-top: 56px;
+      padding-top: 18px;
+      border-top: 1px solid var(--line);
+      color: var(--muted);
+      font-family: "Segoe UI", "Helvetica Neue", sans-serif;
+      font-size: 13px;
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+    }
+    @media (max-width: 800px) {
+      header, .stats, .two, .bar-row, footer { grid-template-columns: 1fr; }
+      header, footer { text-align: left; display: block; }
+      .deadline { text-align: left; margin-top: 16px; }
+      .stats { grid-template-columns: 1fr 1fr; }
+      .num { width: auto; }
+    }
+    @media print {
+      .switch { display: none; }
+      body { background: #fff; }
+      .wrap { width: auto; padding: 0; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div>
+        <h1>Оценка разработки корпоративного сайта</h1>
+        <p class="lead">Каталог, личный кабинет на две роли, оформление запроса без онлайн-оплаты. Платформа WordPress и WooCommerce. Русская и английская версии.</p>
+      </div>
+    </header>
+
+    <div class="switch" role="tablist" aria-label="Сценарий оценки">
+      <button type="button" data-s="optimistic">Оптимистичный</button>
+      <button type="button" data-s="realistic" aria-pressed="true">Реалистичный</button>
+      <button type="button" data-s="pessimistic">Пессимистичный</button>
+    </div>
+
+    <div class="stats">
+      <div class="stat"><strong id="d-days">53 дн.</strong><span>Объём работ</span></div>
+      <div class="stat"><strong id="d-hours">424 ч</strong><span>Часы разработки</span></div>
+      <div class="stat"><strong id="d-weeks">11 недель</strong><span>Календарный срок</span></div>
+    </div>
+
+    <section>
+      <h2>Распределение по этапам</h2>
+      <div class="bars" id="bars"></div>
+    </section>
+
+    <section>
+      <h2>Состав работ</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Этап</th>
+            <th>Состав</th>
+            <th class="num">Опт.</th>
+            <th class="num">Реал.</th>
+            <th class="num">Песс.</th>
+          </tr>
+        </thead>
+        <tbody id="rows"></tbody>
+      </table>
+    </section>
+
+
+    <section class="two">
+      <div class="box">
+        <h3>Входит в оценку</h3>
+        <ul>
+          <li>Разработка сайта по готовым макетам для десктопа и планшетов</li>
+          <li>Каталог, корзина и запрос коммерческого предложения без оплаты</li>
+          <li>Личный кабинет, импорт каталога, Bitrix24, Метрика и виджеты</li>
+          <li>Русская и английская версии, базовая SEO-разметка и перенос страниц</li>
+        </ul>
+      </div>
+      <div class="box">
+        <h3>Не входит в оценку</h3>
+        <ul>
+          <li>Дизайн и мобильные макеты</li>
+          <li>Онлайн-оплата и отдельная PIM/ERP-система</li>
+          <li>Подготовка английских текстов и юридических документов</li>
+          <li>Постоянное сопровождение после запуска</li>
+        </ul>
+      </div>
+    </section>
+
+    <footer>
+      Морозов Андрей, сентябрь 2026
+    </footer>
+  </div>
+
+  <script>
+    const WORK = [
+      { name: "Архитектура и старт", scope: "Схема ролей, корзины, импорта и маршрутизации заявок", opt: 2, real: 2, pess: 3 },
+      { name: "Инфраструктура WordPress", scope: "Сайт, тестовый контур, резервное копирование и кэш", opt: 2, real: 2, pess: 3 },
+      { name: "Тема и корпоративные разделы", scope: "Шапка, подвал, о компании, контакты, сервис, тренинг-центр, RU/EN", opt: 3, real: 5, pess: 6 },
+      { name: "Каталог, фильтры, поиск", scope: "Диаметры каналов, КТРУ, методика, тип товара, избранное и сравнение", opt: 5, real: 6, pess: 9 },
+      { name: "Корзина и оформление запроса", scope: "Сбор корзины, оформление после входа, ИНН, вложения", opt: 2, real: 3, pess: 5 },
+      { name: "Регистрация и личный кабинет", scope: "Вход по email, две роли, история запросов, статусы, повтор заказа", opt: 3, real: 5, pess: 8 },
+      { name: "Импорт каталога", scope: "Автообновление, сопоставление полей и журнал ошибок", opt: 3, real: 6, pess: 11 },
+      { name: "Bitrix24 и уведомления", scope: "Задача из заказа, регион и менеджер, письма клиенту и отделу продаж", opt: 3, real: 5, pess: 8 },
+      { name: "КП и счета", scope: "Загрузка документов в заказ и скачивание из личного кабинета", opt: 2, real: 3, pess: 5 },
+      { name: "Новости, новинки, отзывы, сервис", scope: "Ленты и карточки, модерация отзывов, сервисная форма с файлами", opt: 2, real: 3, pess: 5 },
+      { name: "SEO и миграция", scope: "ЧПУ, мета-шаблоны, микроразметка, hreflang, 301-редиректы", opt: 3, real: 5, pess: 6 },
+      { name: "Аналитика и виджеты", scope: "Цели Метрики, MAX, Telegram, VK, cookies и согласия", opt: 2, real: 3, pess: 5 },
+      { name: "Проверка и запуск", scope: "Прогон ключевых сценариев, исправления и публикация", opt: 3, real: 5, pess: 6 }
+    ];
+
+    const META = {
+      optimistic: { weeks: "7 недель", launch: "20.10.2026" },
+      realistic: { weeks: "11 недель", launch: "17.11.2026" },
+      pessimistic: { weeks: "16 недель", launch: "22.12.2026" }
+    };
+
+    const daysOf = (item, s) => item[s === "optimistic" ? "opt" : s === "pessimistic" ? "pess" : "real"];
+    const sum = (s) => WORK.reduce((n, item) => n + daysOf(item, s), 0);
+    const max = Math.max(...WORK.flatMap((i) => [i.opt, i.real, i.pess]));
+
+    function render(scenario) {
+      const days = sum(scenario);
+      document.getElementById("d-days").textContent = days + " дн.";
+      document.getElementById("d-hours").textContent = (days * 8) + " ч";
+      document.getElementById("d-weeks").textContent = META[scenario].weeks;
+
+      document.getElementById("bars").innerHTML = WORK.map((item) => {
+        const d = daysOf(item, scenario);
+        const w = Math.round((d / max) * 100);
+        return '<div class="bar-row"><b>' + item.name + '</b><div class="track"><div class="fill" style="width:' + w + '%"></div></div><em>' + d + ' дн.</em></div>';
+      }).join("");
+
+      const col = scenario === "optimistic" ? 0 : scenario === "pessimistic" ? 2 : 1;
+      document.getElementById("rows").innerHTML = WORK.map((item) => {
+        const cells = [item.opt, item.real, item.pess].map((n, i) =>
+          '<td class="num' + (i === col ? " current" : "") + '">' + n + "</td>"
+        ).join("");
+        return '<tr class="current"><td>' + item.name + '</td><td class="scope">' + item.scope + "</td>" + cells + "</tr>";
+      }).join("");
+    }
+
+    document.querySelectorAll(".switch button").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        document.querySelectorAll(".switch button").forEach((b) => b.setAttribute("aria-pressed", String(b === btn)));
+        render(btn.dataset.s);
+      });
+    });
+
+    render("realistic");
+  </script>
+</body>
+</html>
